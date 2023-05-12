@@ -80,12 +80,15 @@ export async function updateRecipeByID(id, instructions) {
 
     for (let i=0; i < recipesObject.length; i++){
         if (recipesObject[i].id === id){
+            recipesObject[i].instructions = instructions;
             recipe = recipesObject[i];
-            recipe.instructions = instructions;
             break;
     }
     await fs.writeFile(fileName, JSON.stringify(recipesObject, null, 2));
+    
+    console.log(instructions)
     return recipe;
+
 }}
 
 

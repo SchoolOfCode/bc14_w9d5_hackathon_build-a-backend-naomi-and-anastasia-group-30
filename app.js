@@ -41,7 +41,6 @@ app.get("/api/recipes/:id", (req, res) => { // This is the endpoint that the cli
 
 
 //Create a POST /api/recipes this is the end point the client can use to add data to the back end
-
 app.post("/api/recipes", async function (req, res){
   res.send(await createRecipe(req.body.title, req.body.ingredients, req.body.instructions, req.body.image));
  })
@@ -55,7 +54,6 @@ app.post("/api/recipes", async function (req, res){
 //This now works because: when making the request, the JSON object is read, the keys are identified "title"
 //thunder client looks in this doc to know how to make the request, we've provided the request object as an argument, and so 
 //it uses the title, etc provided in the request to formulate the response.
-
 
 app.patch("/api/recipes/:id", async function (req, res){
   res.send(await updateRecipeByID(req.params.id, req.body.instructions));
