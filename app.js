@@ -39,6 +39,36 @@ app.get("/api/recipes/:id", (req, res) => { // This is the endpoint that the cli
   singleRecipe(); // The singleRecipe function will be called and return the recipe with the matching id to the client as a response
 });
 
+
+//Create a POST /api/recipes this is the end point the client can use to add data to the back end
+
+app.post("/api/recipes", async function (req, res){
+  res.send(await createRecipe(req.body.title, req.body.ingredients, req.body.instructions, req.body.image));
+ })
+ //req.params is used when the client is putting info into the url e.g the unique id 
+ //req.body is used when you provide info in the request in the form of a JSON body.
+
+
+//404 error emerged because the url that is being requested didnt match the route provided to the 
+//route handler (recipes not recipe)
+
+//This now works because: when making the request, the JSON object is read, the keys are identified "title"
+//thunder client looks in this doc to know how to make the request, we've provided the request object as an argument, and so 
+//it uses the title, etc provided in the request to formulate the response.
+
+
+app.patch("/api/recipes/:id", async function (req, res){
+  res.send(await updateRecipeByID(req.params.id, req.body.instructions));
+ })
+
+
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+
+
+
+
+//example of recipe to add to API

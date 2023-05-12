@@ -8,6 +8,8 @@ const fileName = "recipes.json";
 // To make the app.js file easier to read and understand
 // The app.js file will call these helper functions when the client hits the endpoints
 
+
+
 // GET ALL RECIPES
 // Read the recipes.json file and await its response
 // Save it to a variable called recipesJSON
@@ -19,6 +21,8 @@ export async function getRecipes() {
     return recipes; // Return the array of objects
 }
 // If it's not working on Thunder Client, remember to check the port number in the URL, plus to have no s in http
+
+
 
 // GET A RECIPE BY ID
 // Read the recipes.json file and await its response
@@ -45,11 +49,46 @@ export async function getRecipeByID(id) { // This function will be called when t
 // In this function, we're looking for a particular recipe by the id we're giving it
 // So we need to pass the id as an argument to the function when we call it via the request object in the app.js file
 
+
+
+
 // CREATE A RECIPE
-export async function createRecipe(newRecipe) {}
+export async function createRecipe(title, ingredients, instructions, image) {
+    const recipesString = await fs.readFile(fileName); //reading the json file (string), save read version in a variable
+    const recipesObject = JSON.parse(recipesString); //parse the json string into a json array of objects
+
+    const newRecipe = { 
+        id: uuidv4(),
+        title,
+        ingredients,
+        instructions,
+        image,
+    };
+    // define the new recipe object structure, actual content to be provided by client during HTTP request
+    recipesObject.push(newRecipe); //push new object into exisitng object
+    await fs.writeFile(fileName, JSON.stringify(recipesObject)); //write the object back into its stringified version
+    return newRecipe; //return the new recipe as proof that it works
+}
+
 
 // UPDATE A RECIPE BY ID
-export async function updateRecipeByID(id, updatedRecipe) {}
+export async function updateRecipeByID(id, instructions) {
+    const recipesString = await fs.readFile(fileName); //reading the json file (string), save read version in a variable
+    const recipesObject = JSON.parse(recipesString); //parse the json string into a json array of objects
+
+    let recipe = null;
+
+    for (let i=0; i < recipesObject.length; i++){
+        if (recipesObject[i].id === id){
+            recipe = recipesObject[i];
+            recipe.instructions = instructions;
+            break;
+    }
+    await fs.writeFile(fileName, JSON.stringify(recipesObject, null, 2));
+    return recipe;
+}}
+
+
 
 // DELETE A RECIPE BY ID
 export async function deleteRecipeByID(id) {}
