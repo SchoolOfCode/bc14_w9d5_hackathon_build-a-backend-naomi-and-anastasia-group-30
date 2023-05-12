@@ -56,10 +56,14 @@ app.post("/api/recipes", async function (req, res){
 //it uses the title, etc provided in the request to formulate the response.
 
 app.patch("/api/recipes/:id", async function (req, res){
+  const result = await updateRecipeByID(req.params.id, req.body.instructions);
   res.send(await updateRecipeByID(req.params.id, req.body.instructions));
+  console.log(result);
  })
 
-
+app.delete("/api/recipes/:id", async function (req, res){
+  res.send(await deleteRecipeByID(req.params.id));
+ })
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

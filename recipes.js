@@ -11,10 +11,6 @@ const fileName = "recipes.json";
 
 
 // GET ALL RECIPES
-// Read the recipes.json file and await its response
-// Save it to a variable called recipesJSON
-// Parse the recipesJSON into a JavaScript array of objects
-// Return the array of objects
 export async function getRecipes() {
     const recipesJSON = await fs.readFile(fileName); // Read the recipes.json file and await its response
     const recipes = JSON.parse(recipesJSON); // Parse the recipesJSON into a JavaScript array of objects
@@ -25,11 +21,6 @@ export async function getRecipes() {
 
 
 // GET A RECIPE BY ID
-// Read the recipes.json file and await its response
-// Save it to a variable called recipesJSON
-// Parse the recipesJSON into a JavaScript array of objects
-// Loop through the array of objects
-// If the id of the current object matches the id passed in as an argument, return the current object
 export async function getRecipeByID(id) { // This function will be called when the client hits the endpoint, this means when the client requests a recipe by id
     const recipesJSON = await fs.readFile(fileName); // Read the recipes.json file and await its response
     const recipes = JSON.parse(recipesJSON); // Parse the recipesJSON into a JavaScript array of objects
@@ -79,19 +70,41 @@ export async function updateRecipeByID(id, instructions) {
     let recipe = null;
 
     for (let i=0; i < recipesObject.length; i++){
+        console.log("I'm inside my for loop");
         if (recipesObject[i].id === id){
-            recipesObject[i].instructions = instructions;
-            recipe = recipesObject[i];
+            console.log("I'm inside my if statement");
+            recipesObject[i].instructions = instructions; // update the instructions of the recipe with the matching id
+            console.log(recipesObject[i]);
+            recipe = recipesObject[i]; // set the recipe variable to the recipe with the matching id
             break;
     }
     await fs.writeFile(fileName, JSON.stringify(recipesObject, null, 2));
-    
-    console.log(instructions)
+}
+    // console.log(instructions)
     return recipe;
-
-}}
-
+}
 
 
 // DELETE A RECIPE BY ID
-export async function deleteRecipeByID(id) {}
+export async function deleteRecipeByID(id) {
+    const recipesString = await fs.readFile(fileName); //reading the json file (string), save read version in a variable
+    const recipesObject = JSON.parse(recipesString); //parse the json string into a json array of objects
+
+    let recipeIndex = null;
+
+    for (let i = 0; i < recipesObject.length; i++) {
+        if (recipesObject[i].id === id) {
+          console.log(recipesObject[i]);
+          recipeIndex = i; // This is giving us the index of the recipe that we want to delete
+          break;
+        }
+    }
+    if (recipeIndex !== null) {
+        const deletedRecipe = recipesObject.splice(recipeIndex, 1);
+        console.log(deletedRecipe[0])
+        // In the deletedRecipe variable we are assigning the result of the splice which is the array item (object) with the matching index
+        await fs.writeFile(fileName, JSON.stringify(recipesObject));
+        return deletedRecipe[0]; // The splice method gives us the result as an array, that's why we're specifying the item of the array we need to delete
+    }
+    return null;
+}
