@@ -13,10 +13,10 @@
   "author": "Chris Meah <chris@schoolofcode.co.uk>",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.22"
   }
 }
