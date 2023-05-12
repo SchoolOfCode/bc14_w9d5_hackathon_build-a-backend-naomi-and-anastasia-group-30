@@ -35,6 +35,11 @@ export async function getRecipeByID(id) { // This function will be called when t
     // if (recipeObject === null) { // If the recipeObject is still null, return an error message
     //     throw new Error("Recipe not found");
     // }
+    if (recipeObject === null) {
+        console.log("Recipe not found");
+        const errorMessage = "Recipe not found";
+        return errorMessage;
+    }
     return recipeObject; // Return the recipeObject with the matching id
 }
 // In this function, we're looking for a particular recipe by the id we're giving it
@@ -81,6 +86,12 @@ export async function updateRecipeByID(id, instructions) {
     await fs.writeFile(fileName, JSON.stringify(recipesObject, null, 2));
 }
     // console.log(instructions)
+    
+    if (recipe === null) {
+        console.log("Recipe not found");
+        const errorMessage = "Recipe not found";
+        return errorMessage;
+    }
     return recipe;
 }
 
@@ -106,5 +117,9 @@ export async function deleteRecipeByID(id) {
         await fs.writeFile(fileName, JSON.stringify(recipesObject));
         return deletedRecipe[0]; // The splice method gives us the result as an array, that's why we're specifying the item of the array we need to delete
     }
-    return null;
+    else {
+        console.log("Recipe not found");
+        const errorMessage = "Recipe not found";
+        return errorMessage;
+    }
 }

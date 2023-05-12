@@ -63,6 +63,7 @@ app.patch("/api/recipes/:id", async function (req, res){
 
 app.delete("/api/recipes/:id", async function (req, res){
   res.send(await deleteRecipeByID(req.params.id));
+  // res.status(404).send(errorMessage);
  })
 
 app.listen(PORT, () => {
