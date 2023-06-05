@@ -20,13 +20,29 @@ app.use(express.static("public"));
 app.use(express.json());
 
 // Create a GET /api/recipes endpoint that returns all recipes
-app.get("/api/recipes", (req, res) => { // This is the endpoint that the client will hit to get all recipes from the server
-  async function allRecipes() { // This is the function that will be called when the client hits the endpoint
-    const result = await getRecipes(); // The getRecipes helper function will be called and its result will be saved to a variable called result
-    res.send(result); // The result will be sent back to the client as a response
+// app.get("/api/recipes", (req, res) => { // This is the endpoint that the client will hit to get all recipes from the server
+//   async function allRecipes() { // This is the function that will be called when the client hits the endpoint
+//     const result = await getRecipes(); // The getRecipes helper function will be called and its result will be saved to a variable called result
+//     res.send(result); // The result will be sent back to the client as a response
+//   }
+//   allRecipes(); // The allRecipes function will be called
+//   // So when the client hits the endpoint, the getRecipes helper function will be called and its result will be sent back to the client
+// });
+
+//write the above with payload and response, plus async await
+app.get("/api/recipes", async function (req, res){
+  try {
+    res.json({
+      status: true,
+      payload: await getRecipes(),
+    });
   }
-  allRecipes(); // The allRecipes function will be called
-  // So when the client hits the endpoint, the getRecipes helper function will be called and its result will be sent back to the client
+  catch (error) {
+    res.status(404).json({
+      status: false,
+      payload: error.message,
+    });
+  }
 });
 
 // Create a GET /api/recipes/:id endpoint that returns a single recipe given an id
